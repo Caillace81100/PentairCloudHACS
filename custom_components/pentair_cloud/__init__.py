@@ -6,7 +6,7 @@ import logging
 import voluptuous as vol
 from pypentair import Pentair, PentairAuthenticationError
 
-from homeassistant.config_entries import ConfigEntry
+from homeassistant.config_entries import ConfigEntry, SOURCE_IMPORT
 from homeassistant.const import CONF_ACCESS_TOKEN, CONF_USERNAME, Platform, CONF_EMAIL, CONF_PASSWORD
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
