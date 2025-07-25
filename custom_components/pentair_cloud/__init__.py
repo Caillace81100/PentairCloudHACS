@@ -73,8 +73,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     pentair_hub = PentairCloudHub(_LOGGER)
 
     # Extraire les identifiants de l'entrée de configuration
-    username = entry.data.get(CONF_USERNAME)
-    password = entry.data.get(CONF_PASSWORD)
+    #username = entry.data.get(CONF_USERNAME)
+    #password = entry.data.get(CONF_PASSWORD)
+    username = entry.data["username"]
+    password = entry.data["password"]
+    
 
     # Valider que le nom d'utilisateur et le mot de passe sont fournis
     if not username or not password:
