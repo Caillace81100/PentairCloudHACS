@@ -12,6 +12,7 @@ from homeassistant.config_entries import ConfigFlow
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError # Importez HomeAssistantError d'ici
 from .pentaircloud import PentairCloudHub
 
 from .const import DOMAIN
