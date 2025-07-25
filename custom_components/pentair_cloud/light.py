@@ -16,6 +16,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 from .const import DOMAIN, DEBUG_INFO
 from .pentaircloud import PentairCloudHub, PentairDevice, PentairPumpProgram
+from .entity import PentairDataUpdateCoordinator
 from logging import Logger
 
 _LOGGER = logging.getLogger(__name__)
@@ -26,7 +27,11 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ):
-    hub = hass.data[DOMAIN][config_entry.entry_id]["pentair_cloud_hub"]
+    #hub = hass.data[DOMAIN][config_entry.entry_id]["pentair_cloud_hub"]
+    coordinator = hass.data[DOMAIN][config_entry.entry_id]
+    hub = coordinator.api 
+
+
     devices: list[PentairDevice] = await hass.async_add_executor_job(hub.get_devices)
     cloud_devices = []
     for device in devices:
