@@ -1,12 +1,12 @@
 {
   "domain": "pentair_cloud",
-  "name": "Pentair Home",
-  "codeowners": ["@natekspencer"],
+  "name": "PentairCloudHACS",
+  "codeowners": ["@Caillace81100"],
   "config_flow": true,
-  "documentation": "https://github.com/natekspencer/hacs-pentair",
+  "documentation": "https://github.com/Caillace81100/hacs-pentair",
   "integration_type": "hub",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/natekspencer/hacs-pentair/issues",
+  "issue_tracker": "https://github.com/Caillace81100/hacs-pentair/issues",
   "loggers": ["custom_components.pentair_cloud", "pypentair"],
   "requirements": ["pypentair==0.3.0"],
   "version": "0.0.0"

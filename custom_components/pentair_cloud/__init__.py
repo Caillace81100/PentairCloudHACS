@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-
+import voluptuous as vol
 from pypentair import Pentair, PentairAuthenticationError
 
 from homeassistant.config_entries import ConfigEntry
@@ -11,13 +11,27 @@ from homeassistant.const import CONF_ACCESS_TOKEN, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers.device_registry import DeviceEntry
-
+from .pentaircloud import PentairCloudHub
 from .const import CONF_ID_TOKEN, CONF_REFRESH_TOKEN, DOMAIN
 from .entity import PentairDataUpdateCoordinator
 
+import homeassistant.helpers.config_validation as cv
+
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [Platform.BINARY_SENSOR, Platform.SENSOR]
+PLATFORMS = [Platform.BINARY_SENSOR, Platform.SENSOR, Platform.LIGHT]
+
+CONFIG_SCHEMA = vol.Schema(
+    {
+        DOMAIN: vol.Schema(
+            {
+                vol.Required(CONF_EMAIL): cv.string,
+                vol.Required(CONF_PASSWORD): cv.string,
+            }
+        )
+    },
+    extra=vol.ALLOW_EXTRA,
+)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
