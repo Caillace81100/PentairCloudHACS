@@ -124,6 +124,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 
     hass.data[DOMAIN][entry.entry_id]["pypentair_coordinator"] = coordinator
+    hass.data[DOMAIN][entry.entry_id]["pypentair_devices_coordinator"] = coordinator.device_coordinators
     hass.data[DOMAIN][entry.entry_id]["pypentair_api_client"] = client # Stockez le client API si besoin direct
 
     # =================================================
