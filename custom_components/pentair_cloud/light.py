@@ -17,7 +17,9 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 from .const import DOMAIN, DEBUG_INFO
 from .pentaircloud import PentairCloudHub, PentairDevice, PentairPumpProgram
-from .entity import PentairDataUpdateCoordinator
+
+#from .entity import PentairDataUpdateCoordinator
+from .entity import PentairDeviceDataUpdateCoordinator
 from logging import Logger
 
 _LOGGER = logging.getLogger(__name__)
