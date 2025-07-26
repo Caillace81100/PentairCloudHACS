@@ -70,6 +70,29 @@ class PentairCloudLight(LightEntity):
             self.LOGGER.info("Pentair Cloud Pump " + self._name + " Configured")
 
     @property
+    def color_mode(self) -> ColorMode | str | None:
+        """Retourne le mode de couleur actuel de la lumière."""
+        # C'est la logique la plus simple : si la lumière est allumée ou éteinte
+        # et ne supporte que ONOFF/BRIGHTNESS, c'est le mode par défaut.
+        if self.is_on: # Si la lumière est allumée
+             # Si elle supporte la luminosité, le mode actuel est la luminosité
+            if ColorMode.BRIGHTNESS in self._attr_supported_color_modes:
+                return ColorMode.BRIGHTNESS
+            # Si elle supporte la température de couleur
+            elif ColorMode.COLOR_TEMP in self._attr_supported_color_modes:
+                return ColorMode.COLOR_TEMP
+            # Si elle supporte les couleurs HS
+            elif ColorMode.HS in self._attr_supported_color_modes:
+                return ColorMode.HS
+            # Fallback par défaut si elle est allumée
+            else:
+                return ColorMode.ONOFF # Si elle est allumée, son mode est ONOFF
+        # Si elle est éteinte, son mode est None, ou ONOFF si vous voulez qu'il soit toujours défini
+        # Home Assistant gérera correctement les entités éteintes avec un color_mode défini.
+        return ColorMode.ONOFF # Le mode reste ONOFF même si éteinte pour indiquer sa capacité
+        
+
+    @property
     def unique_id(self):
         return (
             f"pentair_"
