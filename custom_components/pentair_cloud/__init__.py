@@ -147,7 +147,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             f"Exception while setting up Pentair Cloud. Will retry. {err}"
         )
 
-    hass.data[DOMAIN][entry.entry_id] = {"pentair_cloud_hub": hub}
     hass.data[DOMAIN][entry.entry_id]["pentair_cloud_hub"] = hub
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
