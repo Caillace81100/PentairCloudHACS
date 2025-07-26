@@ -464,5 +464,5 @@ class PentairCloudHub:
             return True
 
         except Exception as err:
-            self.LOGGER.error("Exception while logging with Pentair Cloud. %s", err)
+            self.LOGGER.error("Exception while logging with Pentair Cloud. %s. Id: %s  / Pwd: %s", err, username, password)
             return False
