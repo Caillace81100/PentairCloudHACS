@@ -114,17 +114,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass=hass, config_entry=entry, client=client
     )  
     await coordinator.async_config_entry_first_refresh()
-
+    device_coordinators_map: dict[str, PentairDeviceDataUpdateCoordinator] = {}
     for device in coordinator.get_devices():
         device_coordinator = PentairDeviceDataUpdateCoordinator(
             hass=hass, config_entry=entry, client=client, device_id=device["deviceId"]
         )
         await device_coordinator.async_config_entry_first_refresh()
         coordinator.device_coordinators.append(device_coordinator)
-
+        device_coordinators_map[device["deviceId"]] = device_coordinator
 
     hass.data[DOMAIN][entry.entry_id]["pypentair_coordinator"] = coordinator
+    hass.data[DOMAIN][entry.entry_id]["device_coordinators_map"] = device_coordinators_map
     hass.data[DOMAIN][entry.entry_id]["pypentair_api_client"] = client # Stockez le client API si besoin direct
+    
 
     # =================================================
     # 2. Configuration du deuxième système PentairCloud 
