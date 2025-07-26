@@ -27,16 +27,16 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ):
-    #hub = hass.data[DOMAIN][config_entry.entry_id]["pentair_cloud_hub"]  a remetre si besoin
-    coordinator = hass.data[DOMAIN][config_entry.entry_id]
+    hub = hass.data[DOMAIN][config_entry.entry_id]["pentair_cloud_hub"]  
+    #coordinator = hass.data[DOMAIN][config_entry.entry_id]
     #hub = coordinator.api 
 
 
-    devices: list[PentairDevice] = await hass.async_add_executor_job(coordinator.get_devices)
+    devices: list[PentairDevice] = await hass.async_add_executor_job(hub.get_devices)
     cloud_devices = []
     for device in devices:
         for program in device.programs:
-            cloud_devices.append(PentairCloudLight(_LOGGER, coordinator, device, program))
+            cloud_devices.append(PentairCloudLight(_LOGGER, hub, device, program))
     async_add_entities(cloud_devices)
 
 
