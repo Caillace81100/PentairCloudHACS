@@ -40,12 +40,6 @@ class PentairSensorEntityDescription(SensorEntityDescription):
 
     value_fn: Callable[[dict], Any]
 
-
-@dataclass
-class PentairSensorEntityDescription(SensorEntityDescription, RequiredKeysMixin):
-    """Pentair sensor entity description."""
-
-
 SENSOR_MAP: dict[str | None, tuple[PentairSensorEntityDescription, ...]] = {
     None: (
         PentairSensorEntityDescription(
