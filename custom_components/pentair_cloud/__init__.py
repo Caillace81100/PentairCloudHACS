@@ -255,7 +255,7 @@ async def async_remove_config_entry_device(
     hass: HomeAssistant, config_entry: ConfigEntry, device_entry: DeviceEntry
 ) -> bool:
     """Remove a config entry from a device."""
-    coordinator: PentairDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    coordinator: PentairDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]["pypentair_coordinator"] 
     return not any(
         identifier
         for identifier in device_entry.identifiers
