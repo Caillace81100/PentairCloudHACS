@@ -20,7 +20,7 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 STEP_USER_DATA_SCHEMA = vol.Schema(
-    {vol.Required(CONF_USERNAME): str, vol.Required(CONF_PASSWORD): str, vol.Required("password"): str}
+    {vol.Required(CONF_USERNAME): str, vol.Required(CONF_PASSWORD): str}
 )
 
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
@@ -38,7 +38,8 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
 
     hub = PentairCloudHub(_LOGGER)
     if not await hass.async_add_executor_job(
-        hub.authenticate, data["username"], data["password"]
+        #hub.authenticate, data["username"], data["password"]
+        hub.authenticate, data[CONF_USERNAME], data[CONF_PASSWORD]
     ):
         raise InvalidAuth
 
