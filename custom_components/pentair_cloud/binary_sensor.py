@@ -99,7 +99,7 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up Pentair binary sensors using config entry."""
-    coordinator: PentairDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    coordinator: PentairDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]["pypentair_coordinator"]  
 
     entities = [
         PentairBinarySensorEntity(
