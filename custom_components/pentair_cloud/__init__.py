@@ -13,7 +13,12 @@ from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers.device_registry import DeviceEntry
 from .pentaircloud import PentairCloudHub
 from .const import CONF_ID_TOKEN, CONF_REFRESH_TOKEN, DOMAIN
-from .entity import PentairDataUpdateCoordinator
+#from .entity import PentairDataUpdateCoordinator
+
+from .coordinator import (
+    PentairDataUpdateCoordinator,
+    PentairDeviceDataUpdateCoordinator,
+)
 
 import homeassistant.helpers.config_validation as cv
 
@@ -104,8 +109,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     except Exception as ex:
         raise ConfigEntryNotReady(ex) from ex
 
-    coordinator = PentairDataUpdateCoordinator(hass, client=client)
+    #coordinator = PentairDataUpdateCoordinator(hass, client=client)
+    coordinator = PentairDataUpdateCoordinator(
+        hass=hass, config_entry=entry, client=client
+    )  
     await coordinator.async_config_entry_first_refresh()
+
+    for device in coordinator.get_devices():
+        device_coordinator = PentairDeviceDataUpdateCoordinator(
+            hass=hass, config_entry=entry, client=client, device_id=device["deviceId"]
+        )
+        await device_coordinator.async_config_entry_first_refresh()
+        coordinator.device_coordinators.append(device_coordinator)
+
 
     hass.data[DOMAIN][entry.entry_id]["pypentair_coordinator"] = coordinator
     hass.data[DOMAIN][entry.entry_id]["pypentair_api_client"] = client # Stockez le client API si besoin direct
