@@ -62,6 +62,22 @@ CONFIG_SCHEMA = vol.Schema(
 
 #    return True
 
+async def async_setup(hass: HomeAssistant, config: dict):
+    """Set up the PentairCloud component."""
+    hass.data.setdefault(DOMAIN, {})
+    conf = config.get(DOMAIN)
+    if not conf:
+        return True
+
+    hass.async_create_task(
+        hass.config_entries.flow.async_init(
+            DOMAIN,
+            context={"source": SOURCE_IMPORT},
+            data={CONF_EMAIL: conf[CONF_EMAIL], CONF_PASSWORD: conf[CONF_PASSWORD]},
+        )
+    )
+    return True
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Pentair from a config entry."""
 
