@@ -114,7 +114,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # 2. Configuration du deuxième système PentairCloud 
     # =================================================
     username_cloud = entry.data.get(CONF_USERNAME) 
-    password_cloud = entry.data.get(CONF_PASSWORD)
+    password_cloud = entry.data["password"]
 
     try:
         hub = PentairCloudHub(_LOGGER)
