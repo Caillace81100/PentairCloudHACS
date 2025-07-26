@@ -130,7 +130,7 @@ async def async_setup_entry(
     """Set up Pentair binary sensors using config entry."""
 
     coordinator: PentairDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]["pypentair_coordinator"]  
-    device_coordinators_map: dict[str, PentairDeviceDataUpdateCoordinator] = coordinator["device_coordinators_map"]
+    device_coordinators_map: dict[str, PentairDeviceDataUpdateCoordinator] = hass.data[DOMAIN][config_entry.entry_id]["device_coordinators_map"] 
     entities = []
 
     for device_data in main_coordinator.get_devices(): 
