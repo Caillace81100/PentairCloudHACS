@@ -165,7 +165,7 @@ async def async_setup_entry(
                 unit = UNIT_MAP.get(field_data["unit"])
                 entity_description = PentairSensorEntityDescription(
                     key=field,
-                    name=field_data["name"].strip().capitalize() + "_test" ,
+                    name=field_data["name"].strip().capitalize(),
                     entity_category=(
                         None
                         if field_data["category"] == "data"
