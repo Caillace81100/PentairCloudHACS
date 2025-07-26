@@ -18,5 +18,5 @@ async def async_get_config_entry_diagnostics(
     hass: HomeAssistant, entry: ConfigEntry
 ) -> dict[str, Any]:
     """Return diagnostics for a config entry."""
-    coordinator: PentairDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator: PentairDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]["pypentair_coordinator"]  
     return async_redact_data(coordinator.data, TO_REDACT)
