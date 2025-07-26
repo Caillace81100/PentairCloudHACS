@@ -62,8 +62,8 @@ class PentairConfigFlow(ConfigFlow, domain=DOMAIN):
         """Create the config entry."""
         existing_entry = await self.async_set_unique_id(DOMAIN)
 
-        config_data = {k: v for k, v in user_input.items() if k != CONF_PASSWORD}
-
+        #config_data = {k: v for k, v in user_input.items() if k != CONF_PASSWORD}
+        config_data = user_input
         if existing_entry:
             self.hass.config_entries.async_update_entry(
                 existing_entry, data=config_data
