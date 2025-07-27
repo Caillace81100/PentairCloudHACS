@@ -226,19 +226,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 #    _LOGGER.info("Configuration de l'intégration Pentair Cloud terminée avec succès pour l'entrée : %s", entry.entry_id)
 #    return True
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Décharger une entrée de configuration."""
-    _LOGGER.debug("Déchargement de l'intégration Pentair Cloud pour l'entrée : %s", entry.entry_id)
-    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        hass.data[DOMAIN].pop(entry.entry_id)
-        _LOGGER.info("L'intégration Pentair Cloud a été déchargée avec succès pour l'entrée : %s", entry.entry_id)
-    return unload_ok
+#async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+#    """Décharger une entrée de configuration."""
+#    _LOGGER.debug("Déchargement de l'intégration Pentair Cloud pour l'entrée : %s", entry.entry_id)
+#    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+#        hass.data[DOMAIN].pop(entry.entry_id)
+#        _LOGGER.info("L'intégration Pentair Cloud a été déchargée avec succès pour l'entrée : %s", entry.entry_id)
+#    return unload_ok
 
-async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
-    """Gérer la mise à jour des options."""
-    _LOGGER.debug("Options de l'entrée de configuration mises à jour pour l'entrée : %s. Rechargement.", entry.entry_id)
-    await hass.config_entries.async_reload(entry.entry_id)
-
+#async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
+#    """Gérer la mise à jour des options."""
+#    _LOGGER.debug("Options de l'entrée de configuration mises à jour pour l'entrée : %s. Rechargement.", entry.entry_id)
+#    await hass.config_entries.async_reload(entry.entry_id)
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload config entry."""
@@ -250,11 +249,9 @@ async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Handle removal of an entry."""
     hass.data[DOMAIN].pop(entry.entry_id)
 
-
 async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Handle options update."""
     await hass.config_entries.async_reload(entry.entry_id)
-
 
 async def async_remove_config_entry_device(
     hass: HomeAssistant, config_entry: ConfigEntry, device_entry: DeviceEntry
