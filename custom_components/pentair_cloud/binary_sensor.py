@@ -106,7 +106,8 @@ async def async_setup_entry(
 
     entities = [
         PentairBinarySensorEntity(
-            coordinator=coordinator.device_coordinators,
+            #coordinator=coordinator.device_coordinators,
+            coordinator=coordinator,
             config_entry=config_entry,
             description=description,
             device_id=device["deviceId"],
