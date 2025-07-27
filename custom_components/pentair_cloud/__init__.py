@@ -113,8 +113,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     coordinator = PentairDataUpdateCoordinator(
         hass=hass, config_entry=entry, client=client
     )  
+
     await coordinator.async_config_entry_first_refresh()
+
     device_coordinators_map: dict[str, PentairDeviceDataUpdateCoordinator] = {}
+    
     for device in coordinator.get_devices():
         device_coordinator = PentairDeviceDataUpdateCoordinator(
             hass=hass, config_entry=entry, client=client, device_id=device["deviceId"]
@@ -131,25 +134,25 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # =================================================
     # 2. Configuration du deuxième système PentairCloud 
     # =================================================
-    username_cloud = entry.data.get(CONF_USERNAME) 
-    password_cloud = entry.data.get(CONF_PASSWORD) 
+    #username_cloud = entry.data.get(CONF_USERNAME) 
+    #password_cloud = entry.data.get(CONF_PASSWORD) 
 
-    try:
-        hub = PentairCloudHub(_LOGGER)
-        if not await hass.async_add_executor_job(
-            #hub.authenticate, entry.data["username"], entry.data["password"]
-            hub.authenticate, username_cloud, password_cloud
-        ):
-            return False
+    #try:
+    #    hub = PentairCloudHub(_LOGGER)
+    #    if not await hass.async_add_executor_job(
+    #        #hub.authenticate, entry.data["username"], entry.data["password"]
+    #        hub.authenticate, username_cloud, password_cloud
+    #    ):
+    #        return False
 
-        await hass.async_add_executor_job(hub.populate_AWS_and_data_fields)
-    except Exception as err:
-        _LOGGER.error("Exception while setting up Pentair Cloud. Will retry. %s", err)
-        raise ConfigEntryNotReady(
-            f"Exception while setting up Pentair Cloud. Will retry. {err}"
-        )
+    #    await hass.async_add_executor_job(hub.populate_AWS_and_data_fields)
+    #except Exception as err:
+    #    _LOGGER.error("Exception while setting up Pentair Cloud. Will retry. %s", err)
+    #    raise ConfigEntryNotReady(
+    #        f"Exception while setting up Pentair Cloud. Will retry. {err}"
+    #    )
 
-    hass.data[DOMAIN][entry.entry_id]["pentair_cloud_hub"] = hub
+    #hass.data[DOMAIN][entry.entry_id]["pentair_cloud_hub"] = hub
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
@@ -257,7 +260,7 @@ async def async_remove_config_entry_device(
 ) -> bool:
     """Remove a config entry from a device."""
     coordinator: PentairDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]["pypentair_coordinator"] 
-    return not any(
+    return not any(                        
         identifier
         for identifier in device_entry.identifiers
         if identifier[0] == DOMAIN
