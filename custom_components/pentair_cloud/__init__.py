@@ -24,8 +24,7 @@ import homeassistant.helpers.config_validation as cv
 
 _LOGGER = logging.getLogger(__name__)
 
-#PLATFORMS = [Platform.BINARY_SENSOR, Platform.SENSOR, Platform.LIGHT]
-PLATFORMS = [Platform.SENSOR]
+PLATFORMS = [Platform.BINARY_SENSOR, Platform.SENSOR, Platform.LIGHT]
 
 CONFIG_SCHEMA = vol.Schema(
     {
