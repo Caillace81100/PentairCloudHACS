@@ -96,80 +96,82 @@ SENSOR_MAP: dict[str | None, tuple[PentairBinarySensorEntityDescription, ...]] =
 }
 
 
-#async def async_setup_entry(
-#    hass: HomeAssistant,
-#    config_entry: ConfigEntry,
-#    async_add_entities: AddEntitiesCallback,
-#) -> None:
-#    """Set up Pentair binary sensors using config entry."""
-#    coordinator: PentairDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]["pypentair_coordinator"]  
-
-#    entities = [
-#        PentairBinarySensorEntity(
-#            coordinator=coordinator.device_coordinators,
-#            config_entry=config_entry,
-#            description=description,
-#            device_id=device["deviceId"],
-#        )
-#        for device in coordinator.get_devices()
-#        for device_type, descriptions in SENSOR_MAP.items()
-#        for description in descriptions
-#        if device_type is None or device["deviceType"] == device_type
-#    ]
-
-#    if not entities:
-#        return
-
-#    async_add_entities(entities)
-
 async def async_setup_entry(
     hass: HomeAssistant,
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up Pentair binary sensors using config entry."""
-
     coordinator: PentairDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]["pypentair_coordinator"]  
-    device_coordinators_map: dict[str, PentairDeviceDataUpdateCoordinator] = hass.data[DOMAIN][config_entry.entry_id]["device_coordinators_map"] 
-    entities = []
 
-    for device_data in coordinator.get_devices(): 
-        device_id = device_data.get("deviceId")
-        device_type = device_data.get("deviceType")
+    entities = [
+        PentairBinarySensorEntity(
+            coordinator=coordinator.device_coordinators,
+            config_entry=config_entry,
+            description=description,
+            device_id=device["deviceId"],
+        )
+        for device in coordinator.get_devices()
+        for device_type, descriptions in SENSOR_MAP.items()
+        for description in descriptions
+        if device_type is None or device["deviceType"] == device_type
+    ]
 
-        if not device_id:
-            _LOGGER.warning("Appareil sans 'deviceId' trouvé, ignoré: %s", device_data)
-            continue
-
-        coordinator_for_this_device = device_coordinators_map.get(device_id)
-
-        if not coordinator_for_this_device:
-            _LOGGER.warning(
-                "Coordinateur d'appareil non trouvé dans la map pour device_id: %s. "
-                "Impossible de créer des entités pour cet appareil.", 
-                device_id
-            )
-            continue 
-
-       # 6. Parcourir la SENSOR_MAP en fonction du type d'appareil
-        for map_device_type, descriptions in SENSOR_MAP.items():
-            if map_device_type is None or device_type == map_device_type:
-                for description in descriptions:
-                    entities.append(
-                        PentairBinarySensorEntity(
-                            # C'est la LIGNE CRUCIALE : on passe le coordinateur spécifique à l'appareil
-                            coordinator=coordinator_for_this_device, 
-                            config_entry=config_entry,
-                            description=description,
-                            device_id=device_id,
-                        )
-                    )
     if not entities:
-        _LOGGER.debug("Aucune entité de capteur binaire Pentair trouvée pour cette configuration.")
         return
 
     async_add_entities(entities)
-    _LOGGER.debug("Ajouté %d entités de capteur binaire Pentair.", len(entities))
+
+#async def async_setup_entry(
+#    hass: HomeAssistant,
+#    config_entry: ConfigEntry,
+#    async_add_entities: AddEntitiesCallback,
+#) -> None:
+#    """Set up Pentair binary sensors using config entry."""
+
+#    coordinator: PentairDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]["pypentair_coordinator"]  
+#    device_coordinators_map: dict[str, PentairDeviceDataUpdateCoordinator] = hass.data[DOMAIN][config_entry.entry_id]["device_coordinators_map"] 
+#    entities = []
+
+#    for device_data in coordinator.get_devices(): 
+#        device_id = device_data.get("deviceId")
+#        device_type = device_data.get("deviceType")
+
+#        if not device_id:
+#            _LOGGER.warning("Appareil sans 'deviceId' trouvé, ignoré: %s", device_data)
+#            continue
+
+#        coordinator_for_this_device = device_coordinators_map.get(device_id)
+
+#        if not coordinator_for_this_device:
+#            _LOGGER.warning(
+#                "Coordinateur d'appareil non trouvé dans la map pour device_id: %s. "
+#                "Impossible de créer des entités pour cet appareil.", 
+#                device_id
+#            )
+#            continue 
+
+#       # 6. Parcourir la SENSOR_MAP en fonction du type d'appareil
+#        for map_device_type, descriptions in SENSOR_MAP.items():
+#            if map_device_type is None or device_type == map_device_type:
+#                for description in descriptions:
+#                    entities.append(
+#                        PentairBinarySensorEntity(
+#                            # C'est la LIGNE CRUCIALE : on passe le coordinateur spécifique à l'appareil
+#                            coordinator=coordinator_for_this_device, 
+#                            config_entry=config_entry,
+#                            description=description,
+#                            device_id=device_id,
+#                        )
+#                    )
+#    if not entities:
+#        _LOGGER.debug("Aucune entité de capteur binaire Pentair trouvée pour cette configuration.")
+#        return
+
+#    async_add_entities(entities)
+#    _LOGGER.debug("Ajouté %d entités de capteur binaire Pentair.", len(entities))
+
+
 
 
 class PentairBinarySensorEntity(PentairEntity, BinarySensorEntity):
