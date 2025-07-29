@@ -7,17 +7,20 @@
   <img alt="Pentair logo" src="https://brands.home-assistant.io/pentair_cloud/logo.png">
 </picture>
 
-# Pentair Home for Home Assistant
+# PentairCloudHACS for Home Assistant
 
-Home Assistant integration for Pentair Home devices.
+This is a project in which I merge the following two integrations: 
+- hacs-pentair from natekspencer  (https://github.com/natekspencer/hacs-pentair)
+- pentair_cloud from SPD13  (https://github.com/SPD13/pentair_cloud)
 
+This is a first version that needs improvement
 # Installation
 
 There are two main ways to install this custom component within your Home Assistant instance:
 
 1. Using HACS (see https://hacs.xyz/ for installation instructions if you do not already have it installed):
 
-   [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=natekspencer&repository=hacs-pentair&category=integration)
+   [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Caillace81100&repository=PentairCloudHACS&category=integration)
 
    1. Use the convenient My Home Assistant link above, or, from within Home Assistant, click on the link to **HACS**
    2. Click on **Integrations**
@@ -54,7 +57,3 @@ Alternatively:
 ## Support Me
 
 I'm not employed by Pentair, and provide this custom component purely for your own enjoyment and home automation needs.
-
-If you want to donate, consider [sponsoring me on GitHub](https://github.com/sponsors/natekspencer) or buying me a coffee ☕ (or beer 🍺) by using the link below:
-
-<a href='https://ko-fi.com/Y8Y57F59S' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
