@@ -90,10 +90,8 @@ class PentairCloudLight(LightEntity):
             else:
                 return ColorMode.ONOFF # Si elle est allumée, son mode est ONOFF
         # Si elle est éteinte, son mode est None, ou ONOFF si vous voulez qu'il soit toujours défini
-        # Home Assistant gérera correctement les entités éteintes avec un color_mode défini.
         return ColorMode.ONOFF # Le mode reste ONOFF même si éteinte pour indiquer sa capacité
         
-
     @property
     def unique_id(self):
         return (
