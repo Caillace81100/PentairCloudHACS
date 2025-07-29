@@ -398,7 +398,10 @@ def get_api_field_name_and_value(
         
     if isinstance(value, dict) and "value" in value:
         raw_value_to_process = value["value"]
-    
+        
+     # Initialisation de val pour s'assurer qu'elle est toujours définie
+    val = raw_value_to_process # Initialise val avec la valeur brute non traitée
+
     if _fn := API_FIELD_VALUE_FUNCTION.get(key):
       try:
         val = _fn(raw_value_to_process)
