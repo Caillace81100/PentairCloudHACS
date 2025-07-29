@@ -7,7 +7,7 @@ import logging
 from time import time
 from typing import Any
 
-#from pypentair.utils import get_api_field_name_and_value
+#from pypentair.utils import get_api_field_name_and_value  #  BPH Mise en commentaire, et récupération du code qui nous interessedans le fichier pypentair directement afin de modifier le traitement qui pose pb.
 from typing import Any, Final, TypeVar, cast, overload
 from collections.abc import Callable, Mapping
 
@@ -393,19 +393,26 @@ def get_api_field_name_and_value(
 ) -> tuple[str, Any]:
     """Get the API field name and converted value."""
     name = API_FIELD_NAME_MAP.get(key, key)
-    val = value
+
+    raw_value_to_process = value
+        
+    if isinstance(value, dict) and "value" in value:
+        raw_value_to_process = value["value"]
+    
     if _fn := API_FIELD_VALUE_FUNCTION.get(key):
-        try:
-            val = _fn(value)
-        except Exception as ex:  # ignore: bare-except
-            _LOGGER.error(
-                "Could not convert key '%s%s' value '%s': %s",
+      try:
+        val = _fn(raw_value_to_process)
+      except Exception as ex:  # ignore: bare-except
+        _LOGGER.error(
+                "Could not convert key '%s%s' value '%s': %s (data received: %s, raw_value_to_process: %s)",
                 key,
                 f" ({name})" if name != key else "",
-                value,
+                raw_value_to_process, # Log the actual value that caused the error
                 ex,
+                value, # Log the full dictionary received
+                raw_value_to_process # Log the extracted raw value again for clarity
             )
-            _LOGGER.warning('name "%s"', name)
-            _LOGGER.warning('val "%s"', val)
-            _LOGGER.warning('value "%s"', value)
+        _LOGGER.warning('name "%s"', name)
+        _LOGGER.warning('val "%s"', val)
+        _LOGGER.warning('value "%s"', value)
     return name, val
