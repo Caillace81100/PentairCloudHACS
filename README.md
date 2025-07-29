@@ -1,5 +1,4 @@
-![Release](https://img.shields.io/github/v/release/natekspencer/hacs-pentair?style=for-the-badge)
-[![Buy Me A Coffee/Beer](https://img.shields.io/badge/Buy_Me_A_☕/🍺-F16061?style=for-the-badge&logo=ko-fi&logoColor=white&labelColor=grey)](https://ko-fi.com/natekspencer)
+![Release](https://img.shields.io/github/v/release/Caillace81100/PentairCloudHACS?style=for-the-badge)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
 
 <picture>
