@@ -99,7 +99,7 @@ def get_field_value(key: str, data: dict) -> Any:
                 key, data.get("name", "appareil_inconnu"))
     return None
   
-  _LOGGER.debug('field_data "%s"', field_data)
+  _LOGGER.warning('field_data "%s"', field_data)
 
   # Cet appel est au cœur du problème : que renvoie exactement get_api_field_name_and_value pour 'value' ?
   # D'après l'erreur, 'value' peut être le dictionnaire lui-même.
