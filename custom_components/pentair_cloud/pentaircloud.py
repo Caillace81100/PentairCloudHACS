@@ -6,7 +6,9 @@ from logging import Logger
 from requests_aws4auth import AWS4Auth
 from homeassistant.components.light import ATTR_BRIGHTNESS, PLATFORM_SCHEMA, LightEntity
 import time
+from datetime import datetime, timedelta
 from .const import DEBUG_INFO
+
 
 AWS_REGION = "us-west-2"
 AWS_USER_POOL_ID = "us-west-2_lbiduhSwD"
@@ -120,6 +122,7 @@ class PentairCloudHub:
         self.cognito_client = None
         self.LOGGER = LOGGER
         self.AWS_TOKEN = None
+        self.AWS_TOKEN_EXPIRATION = None
         self.AWS_IDENTITY_ID = None
         self.AWS_ACCESS_KEY_ID = None
         self.AWS_SECRET_ACCESS_KEY = None
@@ -137,11 +140,25 @@ class PentairCloudHub:
 
     def populate_AWS_token(self) -> None:
         if self.cognito_client is not None:
-            self.cognito_client.check_token()
-            new_token = self.cognito_client.get_user()._metadata["id_token"]
-            if self.AWS_TOKEN != new_token:  # Token has been refreshed
-                self.AWS_TOKEN = new_token
-                self.populate_AWS_and_data_fields()
+            # La ligne suivante n'est plus nécessaire car nous allons vérifier l'expiration manuellement
+            #self.cognito_client.check_token()
+
+            # Vérifier si le jeton est sur le point d'expirer dans les 5 prochaines minutes
+           if self.AWS_TOKEN is None or self.AWS_TOKEN_EXPIRATION is None or datetime.now() >= self.AWS_TOKEN_EXPIRATION - timedelta(minutes=5):
+              self.LOGGER.info("Le jeton AWS est expiré ou va bientôt expirer. Rafraîchissement...")
+              new_token = self.cognito_client.get_user()._metadata["id_token"]
+              self.AWS_TOKEN = new_token
+
+              # Pycognito ne fournit pas directement l'expiration, mais nous pouvons le déduire du token JWT
+              # Par défaut, les jetons Cognito durent 1 heure.
+              self.AWS_TOKEN_EXPIRATION = datetime.now() + timedelta(hours=1) 
+              self.populate_AWS_and_data_fields()
+
+            #if self.AWS_TOKEN != new_token:  # Token has been refreshed
+                #self.AWS_TOKEN = new_token
+                #self.populate_AWS_and_data_fields()
+           else:
+              self.LOGGER.info("Le jeton AWS est toujours valide. Pas de rafraîchissement.")
 
     def populate_AWS_and_data_fields(self) -> None:
         if self.AWS_TOKEN is None:
